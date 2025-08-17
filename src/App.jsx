@@ -1,14 +1,14 @@
-import { useState } from 'react'
+
 import './App.css'
 import AddTodo from './components/addTodo'
 import Todos from './components/todos'
 function App() {
-  const [count, setCount] = useState(0)
+  
 
   return (
     <>
-    <div>
-      <h2>Redux toolkit tutorial practice</h2>
+    <div className='items-center'>
+      <h2 className='text-white font-bold text-lg '>Redux toolkit tutorial practice</h2>
       <AddTodo />
       <Todos />
     </div>
@@ -16,4 +16,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
