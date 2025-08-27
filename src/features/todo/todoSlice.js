@@ -1,6 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { nanoid } from '@reduxjs/toolkit'
-const initialState = []
+
+const loadTodos = () => {
+  try {
+    const todos = localStorage.getItem("todos");
+    return todos ? JSON.parse(todos) : [];
+  } catch (error) {
+    console.error("Error loading todos:", error);
+    return [];
+  }
+};
+
+
+// Save to localStorage
+const saveTodos = (todos) => {
+  try {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  } catch (error) {
+    console.error("Error saving todos:", error);
+  }
+};
+
+
+const initialState = loadTodos()
 
 const todoSlice = createSlice({
   name: 'todos',
@@ -11,10 +33,13 @@ const todoSlice = createSlice({
         id: nanoid(),
         text: action.payload,
         completed: false,
-      })
+        
+      }),saveTodos(state);
     },
     removeTodo: (state, action) => {
-      return state.filter(todo => todo.id !== action.payload)
+      const newState = state.filter((todo) => todo.id !== action.payload);
+      saveTodos(newState);
+      return newState; // must return since we replaced the array
     },
 
     updateTodo: (state,action) => {
@@ -22,7 +47,9 @@ const todoSlice = createSlice({
       const todo= state.find(todo => todo.id === id)
       if(todo) {
         todo.text = newText
+        todo.completed = false;
       }
+      saveTodos(state); // ✅ persist
     },
 
     toggleTodo: (state, action) => {
@@ -30,6 +57,7 @@ const todoSlice = createSlice({
       if (todo) {
         todo.completed = !todo.completed
       }
+      saveTodos(state);
     }
   }
 })
