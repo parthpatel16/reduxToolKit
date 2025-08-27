@@ -18,10 +18,10 @@ const todoSlice = createSlice({
     },
 
     updateTodo: (state,action) => {
-      const {id, newTodo} = action.payload
+      const {id, newText} = action.payload
       const todo= state.find(todo => todo.id === id)
       if(todo) {
-        todo.text = newTodo
+        todo.text = newText
       }
     },
 
